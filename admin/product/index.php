@@ -2,10 +2,8 @@
 
 include $_SERVER['DOCUMENT_ROOT'] . "/admin/include/protect.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/admin/include/connect.php";
-
 $nbPerPage = 50;
 $page = 1;
-
 if (isset($_GET['p']) && $_GET['p'] > 0) {
     $page = $_GET['p'];
 }
@@ -24,7 +22,6 @@ $stmt->execute();
 $recordset = $stmt->fetchAll();
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
