@@ -4,6 +4,13 @@ include $_SERVER['DOCUMENT_ROOT'] . "/admin/include/protect.php";
 // On se lie a la base de donnée qui est dans un autre dossier
 require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/include/connect.php";
 
+$images = [
+    ["prefix" => "xl", "width" => 1600, "height" => 900],
+    ["prefix" => "lg", "width" => 800, "height" => 600],
+    ["prefix" => "md", "width" => 400, "height" => 400],
+    ["prefix" => "xs", "width" => 150, "height" => 150],
+];
+
 // On veut savoir l'extension du fichier
 // generatefilename à 2 paramètre : le nom de fichier et le nom qu'on veut lui donner
 function generateFilename($filename, $title)
