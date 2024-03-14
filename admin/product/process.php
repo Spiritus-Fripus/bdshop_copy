@@ -94,7 +94,7 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
             if ($image['width'] == $image['height']) {
                 // test crop
                 $imgSrcZoneX = round(($imgSrcWidth - $imgSrcHeight) / 2);
-                $imgSrczoneY = 0;
+                $imgSrcZoneY = 0;
                 $imgSrcZoneWidth = $imgSrcHeight;
                 $imgSrcZoneHeight = $imgSrcHeight;
             } else {
