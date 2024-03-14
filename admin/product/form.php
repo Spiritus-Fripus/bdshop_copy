@@ -40,72 +40,72 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajout/Modification</title>
 </head>
+
 <body class="bg-warning">
-<h1 class="text-center mt-5">Ajout ou modification d'un livre</h1>
-<div class="formulaire">
-    <form action="process.php" method="post" enctype="multipart/form-data"
-          class="d-flex align-items-center flex-column grid gap-2">
-        <label for="product_name" class="fs-4 mt-2">Titre</label>
-        <input type="text" id="product_name" name="product_name" value="<?= htmlspecialchars($product_name); ?>">
+    <h1 class="text-center mt-5">Ajout ou modification d'un livre</h1>
+    <div class="formulaire">
+        <form action="process.php" method="post" enctype="multipart/form-data" class="d-flex align-items-center flex-column grid gap-2">
+            <label for="product_name" class="fs-4 mt-2">Titre</label>
+            <input type="text" id="product_name" name="product_name" value="<?= htmlspecialchars($product_name); ?>">
 
-        <label for="product_serie" class="fs-4">Série</label>
-        <input type="text" id="product_serie" name="product_serie" value="<?= htmlspecialchars($product_serie); ?>">
+            <label for="product_serie" class="fs-4">Série</label>
+            <input type="text" id="product_serie" name="product_serie" value="<?= htmlspecialchars($product_serie); ?>">
 
-        <label for="product_author" class="fs-5">Auteur</label>
-        <input type="text" id="product_author" name="product_author" value="<?= htmlspecialchars($product_author); ?>">
+            <label for="product_author" class="fs-5">Auteur</label>
+            <input type="text" id="product_author" name="product_author" value="<?= htmlspecialchars($product_author); ?>">
 
-        <label for="product_publisher" class="fs-5">Editeur</label>
-        <input type="text" id="product_publisher" name="product_publisher"
-               value="<?= htmlspecialchars($product_publisher); ?>">
+            <label for="product_publisher" class="fs-5">Editeur</label>
+            <input type="text" id="product_publisher" name="product_publisher" value="<?= htmlspecialchars($product_publisher); ?>">
 
-        <label for="product_date" class="fs-5">Date</label>
-        <input type="date" id="product_date" name="product_date" value="<?= htmlspecialchars($product_date); ?>">
+            <label for="product_date" class="fs-5">Date</label>
+            <input type="date" id="product_date" name="product_date" value="<?= htmlspecialchars($product_date); ?>">
 
-        <label for="product_price" class="fs-5">Prix</label>
-        <input type="text" id="product_price" name="product_price" value="<?= htmlspecialchars($product_price); ?>">
+            <label for="product_price" class="fs-5">Prix</label>
+            <input type="text" id="product_price" name="product_price" value="<?= htmlspecialchars($product_price); ?>">
 
-        <label for="product_stock" class="fs-5">Stock</label>
-        <input type="text" id="product_stock" name="product_stock" value="<?= htmlspecialchars($product_stock); ?>">
+            <label for="product_stock" class="fs-5">Stock</label>
+            <input type="text" id="product_stock" name="product_stock" value="<?= htmlspecialchars($product_stock); ?>">
 
-        <label for="product_type_id">type</label>
-        <select id="product_type_id" name="product_type_id">
-            <option value="0">Sélectionnez un élément dans la liste</option>
-            <?php
-            $sqlType = "SELECT * FROM table_type";
-            $stmtType = $db->prepare($sqlType);
-            $stmtType->execute();
-            $recordsetType = $stmtType->fetchAll();
-            foreach ($recordsetType as $rowType) { ?>
-                <option value="<?= htmlspecialchars($rowType['type_id']); ?>"
-                    <?= $rowType['type_id'] == $product_type_id ? "selected" : ""; ?>>
-                    <?= htmlspecialchars($rowType['type_name']); ?>
-                </option>
-            <?php } ?>
-        </select>
-        <!-- Exemple si on sait cb il y a de select -->
-        <!-- <option value="1" <?= ($product_type_id == 1 ? "selected" : ""); ?>>Franco-Belge</option>
+            <label for="product_type_id">type</label>
+            <select id="product_type_id" name="product_type_id">
+                <option value="0">Sélectionnez un élément dans la liste</option>
+                <?php
+                $sqlType = "SELECT * FROM table_type";
+                $stmtType = $db->prepare($sqlType);
+                $stmtType->execute();
+                $recordsetType = $stmtType->fetchAll();
+                foreach ($recordsetType as $rowType) { ?>
+                    <option value="<?= htmlspecialchars($rowType['type_id']); ?>" <?= $rowType['type_id'] == $product_type_id ? "selected" : ""; ?>>
+                        <?= htmlspecialchars($rowType['type_name']); ?>
+                    </option>
+                <?php } ?>
+            </select>
+            <!-- Exemple si on sait cb il y a de select -->
+            <!-- <option value="1" <?= ($product_type_id == 1 ? "selected" : ""); ?>>Franco-Belge</option>
                 <option value="2" <?php if ($product_type_id == 2) {
-            echo "selected";
-        } ?>>Manga</option> -->
-        <!-- Même facon d'ecrire mais de facon ternaire -->
-        <!-- echo si product_type_id est strictement = a 2 alors ffiche le en selectionner sinon n'affiche rien -->
-        <!-- <?= ($product_type_id == 2 ? "selected" : ""); ?> -->
-        <!-- <option value="3" <?= ($product_type_id == 3 ? "selected" : ""); ?>>Comic</option> -->
+                                        echo "selected";
+                                    } ?>>Manga</option> -->
+            <!-- Même facon d'ecrire mais de facon ternaire -->
+            <!-- echo si product_type_id est strictement = a 2 alors affiche le en selectionner sinon n'affiche rien -->
+            <!-- <?= ($product_type_id == 2 ? "selected" : ""); ?> -->
+            <!-- <option value="3" <?= ($product_type_id == 3 ? "selected" : ""); ?>>Comic</option> -->
 
-        <!-- Input pour mettre des images -->
-        <label for="product_image">Image</label>
-        <input type="file" name="product_image" id="product_image">
+            <!-- Input pour mettre des images -->
+            <label for="product_image">Image</label>
+            <input type="file" name="product_image" id="product_image">
 
-        <!-- Champ caché pour l'id -->
-        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_id); ?>">
-        <input type="submit" value="Enregistrer" class="btn btn-warning my-4">
-    </form>
-</div>
+            <!-- Champ caché pour l'id -->
+            <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_id); ?>">
+            <input type="submit" value="Enregistrer" class="btn btn-warning my-4">
+        </form>
+    </div>
 
 </body>
+
 </html>

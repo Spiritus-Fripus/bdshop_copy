@@ -46,9 +46,69 @@ $stmt->bindValue(":product_type_id", $_POST['product_type_id']);
 // Pareil que les valeur du dessus (éviter les doublons)
 $stmt->execute();
 
-if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "") {
+if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" && $_FILES['product_image']['error'] == 0) {
     $filename = generateFilename($_FILES['product_image']['name'], $_POST['product_name']);
     move_uploaded_file($_FILES['product_image']['tmp_name'], $_SERVER["DOCUMENT_ROOT"] . "/upload/product/" . $filename);
+
+    // redimmension de l'image
+    $path = $_SERVER["DOCUMENT_ROOT"] . "/upload/product/";
+
+    // definition de l'extension avec un switch
+    switch ($_FILES['product_image']['type']) {
+        case "image/jpeg":
+            $imgSrc = imagecreatefromjpeg($path . $filename);
+            break;
+        case "image/gif":
+            $imgSrc = imagecreatefromgif($path . $filename);
+            break;
+        case "image/png":
+            $imgSrc = imagecreatefrompng($path . $filename);
+            break;
+        default:
+            echo "Oups";
+            exit();
+    }
+
+    // calcul de la taille de l'image source
+    $sizes = getimagesize($path . $filename);
+    $imgSrcWidth = $sizes[0];
+    $imgSrcHeight = $sizes[1];
+
+    // définition de la taille de l'image de destination
+    $imgDestWidth = 800;
+    $imgDestHeight = 600;
+
+    if ($imgSrcWidth > $imgSrcHeight) {
+        //format paysage
+        $imgDestHeight = round(($imgDestWidth * $imgSrcHeight) / $imgSrcWidth);
+    } else {
+        // format portrait
+        $imgDestWidth = round(($imgDestWidth * $imgSrcWidth) / $imgSrcHeight);
+    }
+
+    // création d'une nouvelle image vierge 
+    $imgDest = imagecreatetruecolor($imgDestWidth, $imgDestHeight);
+
+    // injection dans l'image 
+    imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $imgDestWidth, $imgDestHeight, $imgSrcWidth, $imgSrcHeight);
+
+    // définition du préfix de la nouvelle image
+    switch ($_FILES['product_image']['type']) {
+        case "image/jpeg":
+            // patch + prefixe + nom du fichier + compression 
+            $imgSrc = imagejpeg($imgDest, $path . "lg_" . $filename, 97);
+            break;
+        case "image/gif":
+            $imgSrc = imagegif($imgDest, $path . "lg_" . $filename);
+            break;
+        case "image/png":
+            $imgSrc = imagepng($imgDest, $path . "lg_" . $filename, 5);
+            break;
+    }
+    // supprime le fichier sur le serveur
+    unlink($path . $filename);
+
+
     $sql = "UPDATE table_product SET product_image= :product_image WHERE product_id = :product_id ";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(":product_image", $filename, PDO::PARAM_STR);
