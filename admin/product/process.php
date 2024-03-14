@@ -75,22 +75,28 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
     $imgSrcHeight = $sizes[1];
 
     // définition de la taille de l'image de destination
-    $imgDestWidth = 800;
+    $imgDestWidth = 600;
     $imgDestHeight = 600;
 
     if ($imgSrcWidth > $imgSrcHeight) {
         //format paysage
-        $imgDestHeight = round(($imgDestWidth * $imgSrcHeight) / $imgSrcWidth);
+        $imgSrcZoneWidth = $imgSrcHeight;
+        $imgSrcZoneHeight = $imgSrcHeight;
+        $imgSrcZoneX = round(($imgSrcWidth - $imgSrcHeight) / 2);
+        $imgSrcZoneY = 0;
     } else {
         // format portrait
-        $imgDestWidth = round(($imgDestWidth * $imgSrcWidth) / $imgSrcHeight);
+        $imgSrcZoneWidth = $imgDestWidth;
+        $imgSrcZoneHeight = $imgSrcHeight;
+        $imgSrcZoneX = 0;
+        $imgSrcZoneY = round(($imgSrcHeight - $imgSrcWidth) / 2);
     }
 
     // création d'une nouvelle image vierge 
     $imgDest = imagecreatetruecolor($imgDestWidth, $imgDestHeight);
 
     // injection dans l'image 
-    imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $imgDestWidth, $imgDestHeight, $imgSrcWidth, $imgSrcHeight);
+    imagecopyresampled($imgDest, $imgSrc, 0, 0, $imgSrcZoneX, $imgSrcZoneY, $imgDestWidth, $imgDestHeight, $imgSrcZoneWidth, $imgSrcZoneHeight);
 
     // définition du préfix de la nouvelle image
     switch ($_FILES['product_image']['type']) {

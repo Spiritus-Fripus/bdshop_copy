@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_connected']) || $_SESSION['user_connected'] != "ok") 
 </head>
 
 <body>
-    <h1>LOGED</h1>
+    <h1>LOGGED AS ADMIN</h1>
 </body>
 
 </html>
