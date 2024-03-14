@@ -4,6 +4,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/admin/include/protect.php";
 // On se lie a la base de donnée qui est dans un autre dossier
 require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/include/connect.php";
 
+// def des dimenssions d'image
 $images = [
     ["prefix" => "xl", "width" => 1600, "height" => 900],
     ["prefix" => "lg", "width" => 800, "height" => 600],
@@ -60,67 +61,91 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
     // redimmension de l'image
     $path = $_SERVER["DOCUMENT_ROOT"] . "/upload/product/";
 
-    // definition de l'extension avec un switch
-    switch ($_FILES['product_image']['type']) {
-        case "image/jpeg":
-            $imgSrc = imagecreatefromjpeg($path . $filename);
-            break;
-        case "image/gif":
-            $imgSrc = imagecreatefromgif($path . $filename);
-            break;
-        case "image/png":
-            $imgSrc = imagecreatefrompng($path . $filename);
-            break;
-        default:
-            echo "Oups";
-            exit();
+    // definition de plusieurs tailles 
+    foreach ($images as $image) {
+
+        // definition de l'extension avec un switch
+        switch ($_FILES['product_image']['type']) {
+            case "image/jpeg":
+                $imgSrc = imagecreatefromjpeg($path . $filename);
+                break;
+            case "image/gif":
+                $imgSrc = imagecreatefromgif($path . $filename);
+                break;
+            case "image/png":
+                $imgSrc = imagecreatefrompng($path . $filename);
+                break;
+            default:
+                echo "Oups";
+                exit();
+        }
+
+        // calcul de la taille de l'image source
+        $sizes = getimagesize($path . $filename);
+        $imgSrcWidth = $sizes[0];
+        $imgSrcHeight = $sizes[1];
+
+        // définition de la taille de l'image de destination
+        $imgDestWidth = $image['width'];
+        $imgDestHeight = $image['height'];
+
+        if ($imgSrcWidth > $imgSrcHeight) {
+            // format paysage
+            if ($image['width'] == $image['height']) {
+                // test crop
+                $imgSrcZoneX = round(($imgSrcWidth - $imgSrcHeight) / 2);
+                $imgSrczoneY = 0;
+                $imgSrcZoneWidth = $imgSrcHeight;
+                $imgSrcZoneHeight = $imgSrcHeight;
+            } else {
+                // test resize
+                $imgDestHeight = round($imgSrcHeight * $imgDestWidth / $imgSrcWidth);
+                $imgSrcZoneX = 0;
+                $imgSrcZoneY = 0;
+                $imgSrcZoneWidth = $imgSrcWidth;
+                $imgSrcZoneHeight = $imgSrcHeight;
+            }
+        } else {
+            // format portrait
+            if ($image['width'] == $image['height']) {
+                // test crop
+                $imgSrcZoneX = 0;
+                $imgSrcZoneY = round(($imgSrcHeight - $imgSrcWidth) / 2);
+                $imgSrcZoneWidth = $imgDestWidth;
+                $imgSrcZoneHeight = $imgSrcWitdh;
+            } else {
+                // test resize
+                $imgDestWidth = round($imgSrcWidth * $imgDestHeight / $imgSrcHeight);
+                $imgSrcZoneX = 0;
+                $imgSrcZoneY = 0;
+                $imgSrcZoneWidth = $imgSrcWidth;
+                $imgSrcZoneHeight = $imgSrcHeight;
+            }
+        }
+
+        // création d'une nouvelle image vierge 
+        $imgDest = imagecreatetruecolor($imgDestWidth, $imgDestHeight);
+
+        // injection dans l'image 
+        imagecopyresampled($imgDest, $imgSrc, 0, 0, $imgSrcZoneX, $imgSrcZoneY, $imgDestWidth, $imgDestHeight, $imgSrcZoneWidth, $imgSrcZoneHeight);
+
+        // définition du préfix de la nouvelle image
+        switch ($_FILES['product_image']['type']) {
+            case "image/jpeg":
+                // patch + prefixe + nom du fichier + compression 
+                $imgSrc = imagejpeg($imgDest, $path . $image['prefix'] . "_" . $filename, 97);
+                break;
+            case "image/gif":
+                $imgSrc = imagegif($imgDest, $path . $image['prefix'] . "_" . $filename);
+                break;
+            case "image/png":
+                $imgSrc = imagepng($imgDest, $path . $image['prefix'] . "_" . $filename, 5);
+                break;
+        }
     }
 
-    // calcul de la taille de l'image source
-    $sizes = getimagesize($path . $filename);
-    $imgSrcWidth = $sizes[0];
-    $imgSrcHeight = $sizes[1];
-
-    // définition de la taille de l'image de destination
-    $imgDestWidth = 600;
-    $imgDestHeight = 600;
-
-    if ($imgSrcWidth > $imgSrcHeight) {
-        //format paysage
-        $imgSrcZoneWidth = $imgSrcHeight;
-        $imgSrcZoneHeight = $imgSrcHeight;
-        $imgSrcZoneX = round(($imgSrcWidth - $imgSrcHeight) / 2);
-        $imgSrcZoneY = 0;
-    } else {
-        // format portrait
-        $imgSrcZoneWidth = $imgDestWidth;
-        $imgSrcZoneHeight = $imgSrcHeight;
-        $imgSrcZoneX = 0;
-        $imgSrcZoneY = round(($imgSrcHeight - $imgSrcWidth) / 2);
-    }
-
-    // création d'une nouvelle image vierge 
-    $imgDest = imagecreatetruecolor($imgDestWidth, $imgDestHeight);
-
-    // injection dans l'image 
-    imagecopyresampled($imgDest, $imgSrc, 0, 0, $imgSrcZoneX, $imgSrcZoneY, $imgDestWidth, $imgDestHeight, $imgSrcZoneWidth, $imgSrcZoneHeight);
-
-    // définition du préfix de la nouvelle image
-    switch ($_FILES['product_image']['type']) {
-        case "image/jpeg":
-            // patch + prefixe + nom du fichier + compression 
-            $imgSrc = imagejpeg($imgDest, $path . "lg_" . $filename, 97);
-            break;
-        case "image/gif":
-            $imgSrc = imagegif($imgDest, $path . "lg_" . $filename);
-            break;
-        case "image/png":
-            $imgSrc = imagepng($imgDest, $path . "lg_" . $filename, 5);
-            break;
-    }
     // supprime le fichier sur le serveur
     unlink($path . $filename);
-
 
     $sql = "UPDATE table_product SET product_image= :product_image WHERE product_id = :product_id ";
     $stmt = $db->prepare($sql);
