@@ -61,19 +61,22 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
     // redimmension de l'image
     $path = $_SERVER["DOCUMENT_ROOT"] . "/upload/product/";
 
+    // definition du prefix
+    $prefix = "";
+
     // definition de plusieurs tailles 
     foreach ($images as $image) {
 
         // definition de l'extension avec un switch
         switch ($_FILES['product_image']['type']) {
             case "image/jpeg":
-                $imgSrc = imagecreatefromjpeg($path . $filename);
+                $imgSrc = imagecreatefromjpeg($path . $prefix . $filename);
                 break;
             case "image/gif":
-                $imgSrc = imagecreatefromgif($path . $filename);
+                $imgSrc = imagecreatefromgif($path . $prefix . $filename);
                 break;
             case "image/png":
-                $imgSrc = imagecreatefrompng($path . $filename);
+                $imgSrc = imagecreatefrompng($path . $prefix . $filename);
                 break;
             default:
                 echo "Oups";
@@ -81,7 +84,7 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
         }
 
         // calcul de la taille de l'image source
-        $sizes = getimagesize($path . $filename);
+        $sizes = getimagesize($path . $prefix . $filename);
         $imgSrcWidth = $sizes[0];
         $imgSrcHeight = $sizes[1];
 
@@ -112,7 +115,7 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
                 $imgSrcZoneX = 0;
                 $imgSrcZoneY = round(($imgSrcHeight - $imgSrcWidth) / 2);
                 $imgSrcZoneWidth = $imgDestWidth;
-                $imgSrcZoneHeight = $imgSrcWitdh;
+                $imgSrcZoneHeight = $imgSrcWidth;
             } else {
                 // test resize
                 $imgDestWidth = round($imgSrcWidth * $imgDestHeight / $imgSrcHeight);
@@ -142,10 +145,17 @@ if (isset($_FILES['product_image']) && $_FILES['product_image']['name'] != "" &&
                 $imgSrc = imagepng($imgDest, $path . $image['prefix'] . "_" . $filename, 5);
                 break;
         }
+
+        // definir que chaque taille soit prise à partir de la précédente 
+        // on passe de 70M de pixels a traiter => 20M
+        if ($image['width'] != $image['height']) {
+            $prefix = $image['prefix'] . "_";
+        }
     }
 
     // supprime le fichier sur le serveur
     unlink($path . $filename);
+
 
     $sql = "UPDATE table_product SET product_image= :product_image WHERE product_id = :product_id ";
     $stmt = $db->prepare($sql);

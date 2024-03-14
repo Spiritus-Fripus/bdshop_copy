@@ -50,7 +50,7 @@ $recordset = $stmt->fetchAll();
                 <tr>
                     <td>
                         <?php if ($row['product_image'] != "") { ?>
-                            <img src="/upload/product/xs_<?= htmlspecialchars($row['product_image']); ?>" alt="Couverture de la BD : <?= $row['product_name']; ?>" width="150" />
+                            <img src="/upload/product/lg_<?= htmlspecialchars($row['product_image']); ?>" alt="Couverture de la BD : <?= $row['product_name']; ?>" width="150" />
                         <?php } ?>
                     </td>
                     <td> <?= htmlspecialchars($row['product_serie']); ?> </td>
