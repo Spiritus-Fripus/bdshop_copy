@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" method="post">
+      <input type="text" id="login" />
+      <div id="msg"></div>
+      <input type="password" id="pwd" />
+    </form>
+  </body>
+  <script>
+    document.getElementById("login").addEventListener("change", function (e) {
+      fetch("check-login.php?login=" + this.value)
+        .then((response) => {
+          return response.text();
+        })
+        .then((data) => {
+          document.getElementById("msg").innerText = "";
+          if (data != "0") {
+            document.getElementById("msg").innerText = "pseudo déjà pris";
+          }
+        });
+    });
+  </script>
+</html>

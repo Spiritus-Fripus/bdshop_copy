@@ -31,6 +31,9 @@ $recordset = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/admin/product/css/style.css">
+    <script src="/js/delete-popup.js" defer></script>
+
 </head>
 
 <body>
@@ -58,7 +61,7 @@ $recordset = $stmt->fetchAll();
                     <td> <?= htmlspecialchars($row['product_price']); ?> </td>
                     <td> <?= htmlspecialchars($row['type_name']) ?></td>
                     <td><a href="form.php?id=<?= htmlspecialchars($row['product_id']); ?>">modifier</a></td>
-                    <td><a href="delete.php?id=<?= htmlspecialchars($row['product_id']); ?>">supprimer</a></td>
+                    <td><button class="btn_delete btn btn-warning" data-id="<?= htmlspecialchars($row['product_id']); ?>">supprimer</button></td>
                 </tr>
             <?php } ?>
         </tbody>
@@ -68,6 +71,12 @@ $recordset = $stmt->fetchAll();
             <li><a href="index.php?p=<?= $i; ?>"><?= $i; ?></a></li>
         <?php } ?>
     </ul>
+    <dialog id="modal-delete">
+        <p>T'es sûr de toi mon frérot ?</p>
+        <button class="btn btn-success" id="modal-cancel">cancel</button>
+        <a class="btn btn-warning" id="modal-confirm">confirm</a>
+    </dialog>
+
 </body>
 
 </html>
