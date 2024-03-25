@@ -10,7 +10,7 @@ if (isset($_POST['subscription_sent'])) {
     $stmt->bindValue(":customer_lastname", $_POST['customer_lastname']);
     $stmt->bindValue(":customer_mail", $_POST['customer_mail']);
     $stmt->bindValue(":customer_password", password_hash($_POST['customer_password'], PASSWORD_DEFAULT));
-    $token = md5(random_int(0, 100000)) . date("ymdhis");
+    $token = signin . phpmd5(random_int(0, 100000)) . date("ymdhis");
     $stmt->bindValue(":customer_token", $token);
     $stmt->execute();
     $id = $db->lastInsertId();
@@ -27,25 +27,26 @@ if (isset($_POST['subscription_sent'])) {
 </head>
 
 <body>
+<?php
+if (!isset($_POST['subscription_sent'])) { ?>
+    <form action="signin.php" method="post">
+        <label for="name">Nom (*)</label>
+        <input type="text" name="customer_lastname" id="name" required>
+        <label for="mail">Mail (*)</label>
+        <input type="email" name="customer_mail" id="mail" required>
+        <label for="password">Mot de passe (*)</label>
+        <input type="password" name="customer_password" id="pwd" required>
+        <input type="hidden" name="subscription_sent" value="1">
+        <input class="bouton" type="submit" value="Enregistrer">
+    </form>
     <?php
-    if (!isset($_POST['subscription_sent'])) { ?>
-        <form action="signin.php" method="post">
-            <label for="name">Nom (*)</label>
-            <input type="text" name="customer_lastname" id="name" required>
-            <label for="mail">Mail (*)</label>
-            <input type="email" name="customer_mail" id="mail" required>
-            <label for="password">Mot de passe (*)</label>
-            <input type="password" name="customer_password" id="pwd" required>
-            <input type="hidden" name="subscription_sent" value="1">
-            <input class="bouton" type="submit" value="Enregistrer">
-        </form>
-    <?php
-    } else { ?>
-        <div>
-            <p> Un mail de confirmation vous a été envoyé, merci de vérifier vos spams et de cliquer sur le lien de confirmation</p>
-            <a href="signin_confirm.php?id=<?= $id; ?>&token=<?= $token; ?>">Cliquez ici</a>
-        </div>
-    <?php } ?>
+} else { ?>
+    <div>
+        <p> Un mail de confirmation vous a été envoyé, merci de vérifier vos spams et de cliquer sur le lien de
+            confirmation</p>
+        <a href="signin_confirm.php?id=<?= $id; ?>&token=<?= $token; ?>">Cliquez ici</a>
+    </div>
+<?php } ?>
 </body>
 
 <script src="/js/verify-user.js"></script>
