@@ -43,41 +43,42 @@ if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_PO
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Password Reset</title>
 </head>
 
 <body>
-    <h1>Password forgotten ?</h1>
-    <?php if ($step == 1) { ?>
-        <form action="" method="post">
-            <label for="mail_recover"> Your mail :
-                <input type="email" name="mail_recover">
-                <input type="submit" value="Envoyer">
-            </label>
-        </form>
-    <?php } ?>
-    <?php if ($step == 2) { ?>
-        <p>A mail has been sent to your personnal adress</p>
-        <?= $link; ?>
-    <?php } ?>
-    <?php if ($step == 3) { ?>
-        <form action="" method="post">
-            <label for="pwd_change">
-                <input type="password" name="pwd_change">
-            </label>
-            <label for="pwd_change_confirm">
-                <input type="password" name="pwd_change_confirm">
-            </label>
-            <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
+<h1>Password forgotten ?</h1>
+<?php if ($step == 1) { ?>
+    <form action="" method="post">
+        <label for="mail_recover"> Your mail :
+            <input type="email" name="mail_recover">
             <input type="submit" value="Envoyer">
-        </form>
-    <?php } ?>
-    <?php if ($step == 4) { ?>
-        <p>Your password has been updated</p>
-        <a href="/admin/include/login.php">login</a>
-    <?php } ?>
+        </label>
+    </form>
+<?php } ?>
+<?php if ($step == 2) { ?>
+    <p>A mail has been sent to your personnal adress</p>
+    <?= $link; ?>
+<?php } ?>
+<?php if ($step == 3) { ?>
+    <form action="" method="post">
+        <label for="pwd_change">
+            <input type="password" name="pwd_change">
+        </label>
+        <label for="pwd_change_confirm">
+            <input type="password" name="pwd_change_confirm">
+        </label>
+        <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
+        <input type="submit" value="Envoyer">
+    </form>
+<?php } ?>
+<?php if ($step == 4) { ?>
+    <p>Your password has been updated</p>
+    <a href="/admin/include/login.php">login</a>
+<?php } ?>
 </body>
 
 </html>
