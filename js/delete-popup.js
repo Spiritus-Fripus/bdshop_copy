@@ -4,7 +4,13 @@ btns.forEach((btn) => {
   btn.addEventListener("click", () => {
     document
       .getElementById("modal-confirm")
-      .setAttribute("href", "delete.php?id=" + btn.getAttribute("data-id"));
+      .setAttribute(
+        "href",
+        "delete.php?id=" +
+          btn.getAttribute("data-id") +
+          "&token=" +
+          document.getElementById("token").innerText,
+      );
     document.getElementById("modal-delete").style.display = "block";
   });
 });

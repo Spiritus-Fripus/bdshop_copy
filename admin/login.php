@@ -1,17 +1,19 @@
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/include/connect.php";
 if (isset($_POST['login']) && isset($_POST['password'])) {
-	$sql = "SELECT * FROM table_admin WHERE admin_login = :login";
-	$stmt = $db->prepare($sql);
-	$stmt->execute([":login" => $_POST['login']]);
-	if ($row = $stmt->fetch()) {
-		if (password_verify($_POST['password'], $row['admin_password'])) {
-			session_start();
-			$_SESSION["user_connected"] = "ok";
-			header("Location: /admin/index.php");
-			exit();
-		}
-	}
+    $sql = "SELECT * FROM table_admin WHERE admin_login = :login";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([":login" => $_POST['login']]);
+    if ($row = $stmt->fetch()) {
+        if (password_verify($_POST['password'], $row['admin_password'])) {
+            session_start();
+            $_SESSION["user_connected"] = "ok";
+            $_SESSION['user_id'] = $row['admin_id'];
+            $_SESSION['token'] = md5(random_int(0, 100000)) . date("ymdhis");
+            header("Location: /admin/index.php");
+            exit();
+        }
+    }
 }
 ?>
 
@@ -35,7 +37,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 
         <label for="password"></label>
         <input type="password" name="password" placeholder="password">
-        
+
         <label for="button"></label>
         <input type="submit" value="ok" name="button" class="button">
 

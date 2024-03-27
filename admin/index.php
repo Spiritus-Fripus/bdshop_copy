@@ -12,8 +12,8 @@ include $_SERVER['DOCUMENT_ROOT'] . "/admin/include/protect.php";
 </head>
 
 <body>
-    <a href="/admin/product/index.php">Gestion des bandes dessinées</a>
-    <a href="/admin/include/logout.php">Déconnexion</a>
+<a href="/admin/product/index.php">Gestion des bandes dessinées</a>
+<a href="/admin/logout.php">Déconnexion</a>
 </body>
 
 </html>

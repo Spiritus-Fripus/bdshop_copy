@@ -60,7 +60,7 @@ if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_PO
     </form>
 <?php } ?>
 <?php if ($step == 2) { ?>
-    <p>A mail has been sent to your personnal adress</p>
+    <p>A mail has been sent to your personal address</p>
     <?= $link; ?>
 <?php } ?>
 <?php if ($step == 3) { ?>
@@ -77,7 +77,7 @@ if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_PO
 <?php } ?>
 <?php if ($step == 4) { ?>
     <p>Your password has been updated</p>
-    <a href="/admin/include/login.php">login</a>
+    <a href="/admin/login.php">login</a>
 <?php } ?>
 </body>
 
