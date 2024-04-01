@@ -17,6 +17,7 @@ if (isset($_POST['subscription_sent'])) {
     //idéalement on envoie un mail à ce moment là, on va donc le simuler
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,26 +28,25 @@ if (isset($_POST['subscription_sent'])) {
 </head>
 
 <body>
-<?php
-if (!isset($_POST['subscription_sent'])) { ?>
-    <form action="signin.php" method="post">
-        <label for="name">Nom (*)</label>
-        <input type="text" name="customer_lastname" id="name" required>
-        <label for="mail">Mail (*)</label>
-        <input type="email" name="customer_mail" id="mail" required>
-        <label for="password">Mot de passe (*)</label>
-        <input type="password" name="customer_password" id="pwd" required>
-        <input type="hidden" name="subscription_sent" value="1">
-        <input class="bouton" type="submit" value="Enregistrer">
-    </form>
     <?php
-} else { ?>
-    <div>
-        <p> Un mail de confirmation vous a été envoyé, merci de vérifier vos spams et de cliquer sur le lien de
-            confirmation</p>
-        <a href="signin_confirm.php?id=<?= $id; ?>&token=<?= $token; ?>">Cliquez ici</a>
-    </div>
-<?php } ?>
+    if (!isset($_POST['subscription_sent'])) { ?>
+        <form action="signin.php" method="post">
+            <label for="name">Nom (*)</label>
+            <input type="text" name="customer_lastname" id="name" required>
+            <label for="mail">Mail (*)</label>
+            <input type="email" name="customer_mail" id="mail" required>
+            <label for="password">Mot de passe (*)</label>
+            <input type="password" name="customer_password" id="pwd" required>
+            <input type="hidden" name="subscription_sent" value="1">
+            <input class="bouton" type="submit" value="Enregistrer">
+        </form>
+    <?php } else { ?>
+        <div>
+            <p> Un mail de confirmation vous a été envoyé, merci de vérifier vos spams et de cliquer sur le lien de
+                confirmation</p>
+            <a href="signin_confirm.php?id=<?= $id; ?>&token=<?= $token; ?>">Cliquez ici</a>
+        </div>
+    <?php } ?>
 </body>
 
 <script src="/js/verify-user.js"></script>

@@ -18,6 +18,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,20 +30,20 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 </head>
 
 <body>
-<div class="container">
-    <h2>Admin</h2>
-    <form action="login.php" method="POST">
-        <label for="login"></label>
-        <input type="text" name="login" placeholder="login">
+    <div class="container">
+        <h2>Admin</h2>
+        <form action="login.php" method="POST">
+            <label for="login"></label>
+            <input type="text" name="login" placeholder="login">
 
-        <label for="password"></label>
-        <input type="password" name="password" placeholder="password">
+            <label for="password"></label>
+            <input type="password" name="password" placeholder="password">
 
-        <label for="button"></label>
-        <input type="submit" value="ok" name="button" class="button">
+            <label for="button"></label>
+            <input type="submit" value="ok" name="button" class="button">
 
-    </form>
-</div>
+        </form>
+    </div>
 </body>
 
 </html>
