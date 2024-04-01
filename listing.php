@@ -52,7 +52,6 @@ $recordset = $stmt->fetchAll();
             <div class="card-info">
                 <p class="text-title"><?= $row['product_name'] ?></p>
                 <p class="text-body"><?= $row['product_author'] ?></p>
-                <p>ref produit : <?= $row['product_id']; ?></p>
             </div>
             <div class="card-footer">
                 <span class="text-title"><?= $row['product_price']; ?>€</span>

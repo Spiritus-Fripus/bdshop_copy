@@ -26,7 +26,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     }
     $stmt->execute();
 
-    $sql = "SELECT product_name,product_price,cart_quantity FROM table_cart INNER JOIN table_product ON table_cart.cart_product_id = table_product.product_id INNER JOIN table_customer ON table_cart.cart_customer_id = table_customer.customer_id WHERE customer_id = :customer_id";
+    $sql = "SELECT product_id,product_name,product_price,cart_quantity FROM table_cart INNER JOIN table_product ON table_cart.cart_product_id = table_product.product_id INNER JOIN table_customer ON table_cart.cart_customer_id = table_customer.customer_id WHERE customer_id = :customer_id";
     $stmt = $db->prepare($sql);
     $stmt->execute([":customer_id" => 42]);
     $recordset = $stmt->fetchAll(PDO::FETCH_ASSOC);
