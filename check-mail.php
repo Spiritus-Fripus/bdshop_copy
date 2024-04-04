@@ -11,7 +11,7 @@ if (!empty($_POST['mail'])) {
     if ($row = $stmt->fetch()) {
 
         $total = $row['total'];
-    };
-};
+    }
+}
 
 echo $total;

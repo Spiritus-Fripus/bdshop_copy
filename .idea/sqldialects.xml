@@ -4,7 +4,7 @@
     <file url="file://$PROJECT_DIR$/admin/product/form.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/admin/product/index.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/admin/product/process.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/listing.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/index.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/signin.php" dialect="GenericSQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>

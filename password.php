@@ -17,8 +17,8 @@ if (!empty($_POST['mail_recover'])) {
         $stmt->bindValue(":customer_id", $customer_id);
         $stmt->execute();
         $link = "<a href='password.php?id=" . $customer_id . "&token=" . $token . "'>Reset your password</a>";
-    };
-};
+    }
+}
 
 if (!empty($_GET['id']) && !empty($_GET['token'])) {
     $sql = "SELECT customer_id FROM table_customer WHERE customer_id = :customer_id AND customer_token = :customer_token";
@@ -28,13 +28,13 @@ if (!empty($_GET['id']) && !empty($_GET['token'])) {
         $step = 3;
         $customer_id = $row['customer_id'];
     }
-};
+}
 if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_POST['pwd_change'] == $_POST['pwd_change_confirm']) {
     $step = 4;
     $sql = "UPDATE table_customer SET customer_token='', customer_password = :customer_password WHERE customer_id = :customer_id";
     $stmt = $db->prepare($sql);
     $stmt->execute([':customer_password' => password_hash($_POST['pwd_change'], PASSWORD_DEFAULT), ':customer_id' => $_POST['customer_id']]);
-};
+}
 ?>
 
 
@@ -54,7 +54,7 @@ if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_PO
 <?php if ($step == 1) { ?>
     <form action="" method="post">
         <label for="mail_recover"> Your mail :
-            <input type="email" name="mail_recover">
+            <input type="email" name="mail_recover" placeholder="mail">
             <input type="submit" value="Envoyer">
         </label>
     </form>
@@ -66,10 +66,10 @@ if (!empty($_POST['pwd_change']) && !empty($_POST['pwd_change_confirm']) && $_PO
 <?php if ($step == 3) { ?>
     <form action="" method="post">
         <label for="pwd_change">
-            <input type="password" name="pwd_change">
+            <input type="password" name="pwd_change" placeholder="new password">
         </label>
         <label for="pwd_change_confirm">
-            <input type="password" name="pwd_change_confirm">
+            <input type="password" name="pwd_change_confirm" placeholder="confirm password ">
         </label>
         <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
         <input type="submit" value="Envoyer">

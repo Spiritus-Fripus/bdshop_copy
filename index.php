@@ -71,7 +71,7 @@ $recordset = $stmt->fetchAll();
     <div class="nav_page">
         <ul>
             <?php for ($i = 1; $i <= ceil($total / $nbPerPage); $i++) { ?>
-                <li><a href="listing.php?p=<?= $i; ?>"><?= $i; ?></a></li>
+                <li><a href="index.php?p=<?= $i; ?>"><?= $i; ?></a></li>
             <?php } ?>
         </ul>
     </div>
